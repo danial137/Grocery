@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../types"
+import { Star } from "lucide-react";
 
 interface Props {
 
@@ -19,7 +20,38 @@ const ProductCard = ({ product }: Props) => {
 
             <div className="relative aspect-square overflow-hidden">
 
-                <img src={product.image} alt={product.name}  className="w-full h-full object-cover p-4 group-hover:p-2 transition-all duration-300"/>
+                <img src={product.image} alt={product.name} className="w-full h-full object-cover p-4 group-hover:p-2 transition-all duration-300" />
+
+
+                {/* badg */}
+
+                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+
+                    {product.discount > 0 && <span className="px-2 py-0.5 text-[10px] font-semibold uppercase bg-app-orange text-white rounded-full">{product.discount}% OFF</span>}
+
+
+                </div>
+
+            </div>
+
+            {/* info */}
+
+            <div className="p-3.5 text-zinc-700">
+
+                <h3 className="text-sm leading-snug mb-1.5 line-clamp-2">{product.name}</h3>
+
+                {/* rating */}
+
+                {product.rating > 0 && (
+
+                    <div className="flex items-center gap-1 mb-2">
+
+                        <Star/>
+
+                    </div>
+
+                )}
+
 
             </div>
 
