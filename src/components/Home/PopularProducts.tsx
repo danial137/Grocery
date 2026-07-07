@@ -3,6 +3,7 @@ import type { Product } from "../../types"
 import { dummyProducts } from "../../assets/assets"
 import { Link } from "react-router-dom"
 import { ArrowRightIcon } from "lucide-react"
+import ProductCard from "../ProductCard"
 
 
 const PopularProducts = () => {
@@ -40,7 +41,9 @@ const PopularProducts = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 xl:gap-8">
               
-              <p>Product list</p>
+              {products.map((product) => (
+                <ProductCard product={product}/>
+            ))}
               
           </div>
           

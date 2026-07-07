@@ -46,7 +46,10 @@ const ProductCard = ({ product }: Props) => {
 
                     <div className="flex items-center gap-1 mb-2">
 
-                        <Star/>
+                        <Star className="size-3 text-app-warning fill-app-warning" />
+
+                        <span className="text-xs font-medium text-app-text">{product.rating}</span>
+                        <span>({product.reviewCount})</span>
 
                     </div>
 
