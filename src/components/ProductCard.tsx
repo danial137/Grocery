@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../types"
-import { Star } from "lucide-react";
+import { Plus, Star } from "lucide-react";
+
 
 interface Props {
 
@@ -54,6 +55,21 @@ const ProductCard = ({ product }: Props) => {
                     </div>
 
                 )}
+
+
+                {/* price + add  */}
+
+                <div className="flex items-center justify-between">
+
+                    <div className="flex items-center gap-1 truncate">
+                        <span className="text-base font-medium">{currency}{product.price.toFixed(1)}</span>
+                        <span className="text-xs text-app-text-light block">/{product.unit}</span>
+                        {product.originalPrice > product.price && <span className="text-xs text-app-text-light line-through ml-1.5">{currency}{product.originalPrice.toFixed(1)}</span>}
+                    </div>
+                    <button onClick={(e) => { e.stopPropagation(); addToCart(product) }} className="size-7 rounded-full bg-app-orange text-white flex-center shrink-0 hover:bg-app-orange-dark transition-colors active:scale-95"><Plus className="size-3.5" /></button>
+
+
+                </div>
 
 
             </div>
