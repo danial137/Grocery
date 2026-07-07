@@ -4,10 +4,10 @@ const AppPromoBanner = () => {
     return (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 my-14 bg-green-950 rounded-2xl">
 
-            {/* left side conetnt  */}
+
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 xl:px-10">
-
+                {/* left side conetnt  */}
                 <div className="text-center md:text-left">
 
                     <h2 className="font-serif text-3xl sm:text-4xl text-white mb-3">{appPromoBannerData.title}</h2>
@@ -19,15 +19,15 @@ const AppPromoBanner = () => {
 
                 </div>
 
-           {/* right side content */}
+                {/* right side content */}
 
-            <img src={assets.delivery_truck} alt="delivery truck" className="max-w-60 sm:max-w-120 xl:pr-10" />       
+                <img src={assets.delivery_truck} alt="delivery truck" className="max-w-60 sm:max-w-120 xl:pr-10" />
 
             </div>
 
 
 
-          
+
 
         </section>
     )
