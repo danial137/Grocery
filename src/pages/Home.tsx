@@ -16,6 +16,7 @@ const Home = () => {
       <PopularProducts />
       <AppPromoBanner />
       <NewsLetter />
+      
     </div>
   )
 }

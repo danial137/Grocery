@@ -19,9 +19,9 @@ const NewsLetter = () => {
 
 
 
-                <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
 
-                    <input type="email" placeholder="Enter Your email address" required  className="flex-1 px-5 py-3.5 rounded-xl border border-app-border focus:border-app-green focus:ring bg-white text-sm transition-all"/>
+                    <input type="email" placeholder="Enter Your email address" required className="flex-1 px-5 py-3.5 rounded-xl border border-app-border focus:border-app-green focus:ring bg-white text-sm transition-all" />
 
                     <button type="submit" className="px-8 py-3.5 bg-app-green text-white font-semibold rounded-xl hover:bg-app-green-light transition-colors shadow-sm whitespace-nowrap active:scale-[0.98]">Subscribe</button>
 
