@@ -1,0 +1,24 @@
+
+const CartSidebar = () => {
+    return (
+        <>
+            
+            {/* overlay */}
+
+            <div className="fixed inset-0 bg-block/40 z-50 transition-opacity" />
+            
+
+            {/* sidebar */}
+            
+            <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl flex flex-col animate-slide-in-right">
+
+
+            </div>
+
+            
+        </>
+
+    )
+}
+
+export default CartSidebar
