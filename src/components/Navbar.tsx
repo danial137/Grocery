@@ -1,36 +1,31 @@
 import { ArrowUpRightIcon, BikeIcon, ChevronDownIcon, LogOutIcon, MapPinIcon, MenuIcon, PackageIcon, SearchIcon, ShieldIcon, ShoppingCartIcon, UserIcon, XIcon } from "lucide-react";
-import  { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 
 const Navbar = () => {
   const user: any = null
-
-  const { cartCount, setIsCartOpen } = {
-    cartCount: 5,
-    setIsCartOpen: (_data: any) => { }
-
-  };
-
+  const { cartCount, setIsCartOpen } = useCart()
   const [searchQuery, setSearchQuery] = useState('')
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const navigate = useNavigate()
 
 
-  // const handleSearch = (e:React.SubmitEvent) => {
+  const handleSearch = (e: React.SubmitEvent) => {
 
-  //   e.preventDefault()
+    e.preventDefault()
 
-  //   if (searchQuery.trim()) {
+    if (searchQuery.trim()) {
 
-  //     navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
 
-  //     setSearchQuery("")
-      
-  //   }
+      setSearchQuery("")
+
+    }
 
 
-  // }
+  }
 
 
   const handleLogout = () => {
@@ -39,7 +34,7 @@ const Navbar = () => {
 
     navigate('/')
 
-    
+
   }
 
 
@@ -74,7 +69,7 @@ const Navbar = () => {
 
             <div className="relative w-full">
 
-              <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
+              <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" onClick={() => handleSearch} />
 
               <input type="text" placeholder="Search for groceries" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
 
@@ -109,7 +104,7 @@ const Navbar = () => {
 
               {user ? (
 
-                <button onClick={()=>setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2 p-2">
+                <button onClick={() => setUserMenuOpen(!userMenuOpen)} className="flex items-center gap-2 p-2">
 
                   <div className="size-7 rounded-full bg-green-950 text-white flex-center">
                     {user.name.charAt(0).toUpperCase()}
@@ -172,7 +167,7 @@ const Navbar = () => {
 
                           <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors">
 
-                            <LogOutIcon size={16}/> Logout
+                            <LogOutIcon size={16} /> Logout
 
                           </button>
 

@@ -1,6 +1,6 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { MinusIcon, PlusIcon, ShoppingBagIcon, Trash2Icon, XIcon } from "lucide-react";
+import { ArrowRightIcon, MinusIcon, PlusIcon, ShoppingBagIcon, Trash2Icon, XIcon } from "lucide-react";
 
 
 const CartSidebar = () => {
@@ -10,12 +10,12 @@ const CartSidebar = () => {
 
     const { items, updateQuantity, removeFromCart, cartTotal, isCartOpen, setIsCartOpen } = useCart()
 
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     if (!isCartOpen) return null
 
     const deliveryFee = cartTotal > 20 ? 0 : 1.99;
-    // const grandTotal = cartTotal + deliveryFee
+    const grandTotal = cartTotal + deliveryFee
 
     return (
         <>
@@ -128,10 +128,16 @@ const CartSidebar = () => {
                         <div className="flex justify-between text-base font-semibold border-t border-app-border pt-3">
 
                             <span>Total</span>
-                            <span>{currency}</span>
+                            <span>{currency}{grandTotal.toFixed(2)}</span>
 
 
                         </div>
+
+                        <button className="w-full py-3 bg-app-orange text-white font-semibold rounded-xl hover:bg-app-orange-dark transition-colors flex-center gap-2 active::scale-[0.98]" onClick={() => { setIsCartOpen(false); navigate('/checkout'); window.scrollTo(0,0) }}>
+
+                            Proceed to checkout <ArrowRightIcon className="size-4" />
+
+                        </button>
 
                     </div>
                 )}
