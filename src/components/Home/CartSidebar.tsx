@@ -118,7 +118,13 @@ const CartSidebar = () => {
                         <div className="flex justify-between text-sm">
 
                             <span className="text-app-text-light">Delivery</span>
-                            <span className="font-medium">{deliveryFee === 0 ? <span className="text-app-success"></span> : `${currency}${deliveryFee.toFixed(2)}`} {cartTotal.toFixed(2)}</span>
+                            <span className="font-medium">
+                                {deliveryFee === 0 ? (
+                                    <span className="text-app-success">Free</span>
+                                ) : (
+                                    `${currency}${deliveryFee.toFixed(2)}`
+                                )}
+                            </span>
 
                         </div>
 
@@ -133,7 +139,7 @@ const CartSidebar = () => {
 
                         </div>
 
-                        <button className="w-full py-3 bg-app-orange text-white font-semibold rounded-xl hover:bg-app-orange-dark transition-colors flex-center gap-2 active::scale-[0.98]" onClick={() => { setIsCartOpen(false); navigate('/checkout'); window.scrollTo(0,0) }}>
+                        <button className="w-full py-3 bg-app-orange text-white font-semibold rounded-xl hover:bg-app-orange-dark transition-colors flex-center gap-2 active::scale-[0.98]" onClick={() => { setIsCartOpen(false); navigate('/checkout'); window.scrollTo(0, 0) }}>
 
                             Proceed to checkout <ArrowRightIcon className="size-4" />
 
