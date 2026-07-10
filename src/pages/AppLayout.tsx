@@ -14,7 +14,6 @@ const AppLayout = () => {
         <Outlet/>
       </main>
       <Footer/>
-      <p>cartsidebar </p>
     
     </>
   )
