@@ -12,20 +12,15 @@ const Navbar = () => {
   const navigate = useNavigate()
 
 
-  const handleSearch = (e: React.SubmitEvent) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    e.preventDefault()
+    if (!searchQuery.trim()) return;
 
-    if (searchQuery.trim()) {
+    navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
 
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-
-      setSearchQuery("")
-
-    }
-
-
-  }
+    setSearchQuery("");
+  };
 
 
   const handleLogout = () => {
@@ -65,11 +60,11 @@ const Navbar = () => {
 
           {/* search */}
 
-          <form className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm">
+          <form onSubmit={handleSearch} className="hidden sm:flex flex-1 max-w-sm text-xs sm:text-sm">
 
             <div className="relative w-full">
 
-              <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" onClick={() => handleSearch} />
+              <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-zinc-500" />
 
               <input type="text" placeholder="Search for groceries" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
 
