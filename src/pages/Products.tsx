@@ -214,7 +214,7 @@ const Products = () => {
           <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-2xl max-h-[80vh] overflow-y-auto animate-slide-in-up">
 
 
-            <div className="fixed items-center justify-between p-4 border-b border-app-border">
+            <div className="flex items-center justify-between p-4 border-b border-app-border">
 
               <h3 className="text-lg font-semibold text-app-green">Filters</h3>
 
