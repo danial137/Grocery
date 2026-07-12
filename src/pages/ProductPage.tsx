@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import type { Product } from "../types";
 import { dummyProducts } from "../assets/assets";
 import Loading from "../components/Loading";
-import { ArrowLeftIcon, HomeIcon, LeafIcon } from "lucide-react";
+import { ArrowLeftIcon, HomeIcon, LeafIcon, MinusIcon, PlusIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
+import DummyReviewsSection from "../assets/DummyReviewsSection";
 
 
 const ProductPage = () => {
@@ -54,6 +55,23 @@ const ProductPage = () => {
   const inCart = !!cartItem;
 
   const displayQuantity = inCart ? cartItem.quantity : localQuantity
+
+
+  const handleMinus = () => {
+    if (inCart) {
+      if (cartItem.quantity > 1) updateQuantity(product._id, cartItem.quantity - 1)
+      else removeFromCart(product._id)
+    } else {
+
+      setLocalQuantity(Math.max(1, localQuantity - 1))
+
+    }
+  }
+
+  const handlePlus = () => {
+    if (inCart) updateQuantity(product._id, cartItem.quantity + 1)
+    else setLocalQuantity(localQuantity + 1)
+  }
 
 
   const categoryLabel = product.category.replace(/-/g, "")
@@ -151,6 +169,97 @@ const ProductPage = () => {
 
             {/* right side */}
 
+
+            <div className="p-6 md:p-10 flex flex-col justify-center">
+
+              <span className="text-xs font-medium text-app-light tracking-wider mb-2 capitalize">{categoryLabel}</span>
+              <h1 className="text-2xl md:text-3xl font-semibold text-app-green mb-3">{product.name}</h1>
+
+
+              {/* rating */}
+
+              {product.rating > 0 && (
+                <div className=" flex items-center gap-2 mb-5">
+
+
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4].map((star) => (
+                      <StarIcon key={star} className={` w-4 h-4 ${star <= Math.round(product.rating) ? "text-app-warning fill-app-warning" : "text-app-border"}`} />
+                    ))}
+                  </div>
+
+                  <span className="text-sm font-medium">{product.rating}</span>
+                  <span className="text-sm text-app-text-light">({product.reviewCount} reviews)</span>
+
+
+                </div>
+              )}
+
+              {/* {price} */}
+
+              <div className="flex items-baseline gap-3 mb-5">
+                <span className="text-3xl md:text-4xl font-semibold text-app-green">{currency}{product.price.toFixed(2)}
+
+                  {product.originalPrice > product.price && (
+                    <span className="text-lg text-app-text-light line-through">{currency}{product.price.toFixed(2)}</span>
+                  )}
+
+                </span>
+              </div>
+
+              <p className="text-sm text-app-text-light leading-relaxed mb-6">{product.description}</p>
+
+
+              <div className="mb-6">
+
+                {product.stock > 0 ? (
+
+                  <span className="text-sm text-app-success font-medium">✓ In Stock ({product.stock}) (100 available)</span>
+                ) : (
+
+                  <span className="text-sm text-app-error font-medium">out of stock</span>
+
+                )}
+
+              </div>
+
+              {/* quantity + add to cart  */}
+
+              <div className="flex items-center gap-3 ">
+
+                {/* quantity */}
+
+                <div className="flex items-center border border-app-border rounded-xl overflow-hidden">
+
+                  <button onClick={handleMinus} className="p-3 hover:bg-app-cream transition-colors">
+                    <MinusIcon className="h-4 w-4" />
+                  </button>
+
+                  <span className="px-5 text-sm font-semibold min-w-10"> {displayQuantity} </span>
+
+
+                  <button onClick={handlePlus} className="p-3 hover:bg-app-cream transition-colors">
+                    <PlusIcon className="h-4 w-4" />
+                  </button>
+
+                </div>
+
+
+                {/* add to cart */}
+
+                <button onClick={() => { if (!inCart) addToCart(product, localQuantity) }} disabled={product.stock === 0} className={`flex-1 py-3 font-semibold rounded-xl transition-colors flex-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] ${inCart ? "bg-app-cream text-app-green border border-app-green" : "bg-app-orange text-white hover:bg-app-orange-dark"}`}>
+
+                  <ShoppingCartIcon className="w-4 h-4" />
+                  {inCart ? "Add to cart" : "Add to cart"}
+
+                </button>
+
+
+              </div>
+
+            </div>
+
+
           </div>
 
         </div>
@@ -161,7 +270,18 @@ const ProductPage = () => {
         {/* customer  */}
 
 
+        {product.reviewCount > 0 && <DummyReviewsSection product={product} />}
+
+
         {/* related prodcuts  */}
+
+        {relatedProducts.length > 0 && (
+
+          <section className="mt-12 mb-44">
+
+          </section>
+
+        )}
 
 
       </div>
