@@ -31,14 +31,15 @@ const App = () => {
         {/* main pages with navbar footer  */}
 
         <Route path='/' element={<AppLayout />}>
-          
+
           <Route index element={<Home />} />
           <Route path='products' element={<Products />} />
           <Route path='products/:id' element={<ProductPage />} />
           <Route path='search' element={<SearchResults />} />
           <Route path='deals' element={<FlashDeals />} />
 
-          <Route element={<ProtectedRoute/>}>
+
+          <Route element={<ProtectedRoute />}>
             <Route path='checkout' element={<CheckOut />} />
             <Route path='orders' element={<MyOrders />} />
             <Route path='orders/:id' element={<OrderTracking />} />

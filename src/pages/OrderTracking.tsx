@@ -2,18 +2,21 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { dummyDashboardOrdersData } from "../assets/assets"
 import Loading from "../components/Loading"
-import { ArrowLeftIcon } from "lucide-react"
+import { ArrowLeftIcon, MapPinIcon, PhoneIcon } from "lucide-react"
 import type { Order } from "../types"
 import OrderOTP from "../components/OrderTracking/OrderOTP"
 import LiveMap from "../components/OrderTracking/LiveMap"
+import OrderTimeLine from "../components/OrderTracking/OrderTimeLine"
 
 const OrderTracking = () => {
+
+  const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$"
 
   const { id } = useParams()
   const navigate = useNavigate()
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLOading] = useState(true)
-  const [liveLocation, setLiveLocation] = useState<{ lat: number, lng: number } | null>(null)
+  const [liveLocation] = useState<{ lat: number, lng: number } | null>(null)
 
 
 
@@ -62,7 +65,37 @@ const OrderTracking = () => {
             <OrderOTP order={order} />
 
             {/* live tracking map  */}
-            <LiveMap order={order} liveLocation={liveLocation}/>
+            <LiveMap order={order} liveLocation={liveLocation} />
+
+            {/* progress time line  */}
+
+            <OrderTimeLine order={order} />
+
+
+            {/* delivery partner  */}
+            {order?.deliveryPartner && order.status != "Delivered" && order.status !== "Cancelled" && (
+              <div className="bg-white rounded-2xl p-5 flex items-center justify-between">
+
+                <div className="flex items-center gap-3">
+                  <div className="size-11 rounded-full bg-app-green flex-center">
+                    <span className="text-white font-semibold text-sm">
+
+                      {order.deliveryPartner.name.charAt(0)}
+
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold text-app-green">{order.deliveryPartner.name}</p>
+                    <p className="text-xs text-app-text-light capitalize">{order.deliveryPartner.vehicleType} Delivery Partner </p>
+                  </div>
+
+                </div>
+                <a href={`tel:${order.deliveryPartner.phone}`} className="p-2.5 bg-app-cream rounded-xl hover:bg-app-cream-dark transition-colors">
+                  <PhoneIcon className="size-4 text-app-green" />
+                </a>
+              </div>
+            )}
 
           </div>
 
@@ -70,6 +103,98 @@ const OrderTracking = () => {
 
 
           {/* right side Oerder details  */}
+
+
+          <div className="space-y-5">
+            {/* delivery address */}
+            <div className="bg-white rounded-2xl p-5">
+
+              <h3 className="text-sm font-semibold text-app-green mb-3 flex items-center gap-2">
+
+                <MapPinIcon className="size-4" />
+
+                Delivery address
+
+              </h3>
+              <p className="text-sm text-app-text-light leading-relaxed">
+                {order?.shippingAddress.label}
+                <br />
+                {order?.shippingAddress.address}
+                <br />
+                {order?.shippingAddress.city},{order?.shippingAddress.state},{order?.shippingAddress.zip}
+
+                <br />
+
+
+              </p>
+
+            </div>
+
+            {/* items */}
+
+
+            <div className="bg-white rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-app-green mb-3">Items ({order?.items.length})</h3>
+
+              <div className="space-y-3">
+
+                {order?.items.map((item, i) => (
+
+                  <div key={i} className="flex items-center gap-3">
+
+                    <img src={item.image} alt={item.name} className="size-10 rounded-lg object-cover" />
+
+                    <div className="flex-1 min-w-0">
+
+                      <p className="text-sm font-semibold text-app-green truncate">{item.name}</p>
+                      <p className="text-xs text-app-text-light">X{item.quantity}</p>
+
+
+                    </div>
+                    <span className="text-sm font-semibold">
+                      {currency} {(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+
+                ))}
+
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-app-border space-y-1.5 text-sm">
+
+                <div className="flex justify-between">
+
+                  <span className="text-app-text-light">Subtotal</span>
+                  <span> {currency} {order?.subtotal.toFixed(2)}</span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span className="text-app-text-light">Delivery</span>
+                  <span> {order?.deliveryFee === 0 ? "Free" : `${currency}${order?.deliveryFee.toFixed(2)}`}</span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span className="text-app-text-light">Tax</span>
+                  <span> {currency} {order?.tax.toFixed(2)}</span>
+
+                </div>
+
+                <div className="flex justify-between pt-2 border-t border-app-border font-semibold text-app-green" >
+
+                  <span className="text-app-text-light">Total</span>
+                  <span> {currency} {order?.total.toFixed(2)}</span>
+
+                </div>
+
+              </div>
+            </div>
+
+
+          </div>
 
         </div>
       </div>
