@@ -13,10 +13,10 @@ const Navbar = () => {
   const navigate = useNavigate()
 
 
-  const handleSearch = (e: React.SubmitEvent) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (searchQuery.trim()) return;
+    if (!searchQuery.trim()) return;
 
     navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
 
