@@ -18,6 +18,9 @@ import AdminProductForm from './pages/admin/AdminProductForm'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminDeliveryPartners from './pages/admin/AdminDeliveryPartners'
+import DeliveryLogin from './pages/delivery/DeliveryLogin'
+import DeliveryDashboard from './pages/delivery/DeliveryDashboard'
+import DeliveryLayout from './pages/delivery/DeliveryLayout'
 const App = () => {
   return (
     <>
@@ -71,6 +74,14 @@ const App = () => {
         </Route>
 
         {/* delivery partners pages */}
+
+        <Route path='delivery/login' element={<DeliveryLogin />} />
+
+        <Route path='delivery' element={<DeliveryLayout />}>
+
+          <Route index element={<DeliveryDashboard />} />
+
+        </Route>
 
 
       </Routes>
