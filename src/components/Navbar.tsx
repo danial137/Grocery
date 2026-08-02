@@ -13,10 +13,10 @@ const Navbar = () => {
   const navigate = useNavigate()
 
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    if (!searchQuery.trim()) return;
+    if (searchQuery.trim()) return;
 
     navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
 
@@ -25,6 +25,7 @@ const Navbar = () => {
 
 
   const handleLogout = () => {
+    logout()
 
     setUserMenuOpen(false)
 
@@ -163,7 +164,7 @@ const Navbar = () => {
 
                           <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors">
 
-                            <LogOutIcon size={16} onClick={logout}/> Logout
+                            <LogOutIcon size={16} onClick={handleLogout}/> Logout
 
                           </button>
 
