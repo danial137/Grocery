@@ -12,6 +12,10 @@ import OrderTracking from './pages/OrderTracking'
 import MyOrders from './pages/MyOrders'
 import Addresses from './pages/Addresses'
 import ProtectedRoute from './components/ProtectedRoute'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminProductForm from './pages/admin/AdminProductForm'
+import AdminProducts from './pages/admin/AdminProducts'
 const App = () => {
   return (
     <>
@@ -45,6 +49,19 @@ const App = () => {
             <Route path='orders/:id' element={<OrderTracking />} />
             <Route path='addresses' element={<Addresses />} />
           </Route>
+
+        </Route>
+
+        {/* admin page */}
+
+        <Route path='/admin' element={<AdminLayout />}>
+
+          <Route index element={<AdminDashboard />} />
+
+          <Route path='products' element={<AdminProducts />} />
+
+          <Route path='products/new' element={<AdminProductForm />} />
+
 
         </Route>
 

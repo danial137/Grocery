@@ -156,7 +156,7 @@ const Navbar = () => {
                       <Link to='/deals' className="dropdown-link md:hidden" ><ArrowUpRightIcon size={16} /> Deals </Link>
 
                       {user?.isAdmin && (
-                        <Link to='/addresses' className="dropdown-link" ><ShieldIcon size={16} className="text-app-orange-dark" /> <span className="text-app-orange-dark">Admin Panel</span> </Link>
+                        <Link to='/admin' className="dropdown-link" ><ShieldIcon size={16} className="text-app-orange-dark" /> <span className="text-app-orange-dark">Admin Panel</span> </Link>
                       )}
 
                       {user && (
