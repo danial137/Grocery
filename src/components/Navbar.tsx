@@ -2,10 +2,11 @@ import { ArrowUpRightIcon, BikeIcon, ChevronDownIcon, LogOutIcon, MapPinIcon, Me
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 
 const Navbar = () => {
-  const user: any = null
+  const { user, logout } = useAuth();
   const { cartCount, setIsCartOpen } = useCart()
   const [searchQuery, setSearchQuery] = useState('')
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -162,7 +163,7 @@ const Navbar = () => {
 
                           <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-sm text-app-error hover:bg-red-50 w-full transition-colors">
 
-                            <LogOutIcon size={16} /> Logout
+                            <LogOutIcon size={16} onClick={logout}/> Logout
 
                           </button>
 
