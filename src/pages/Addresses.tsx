@@ -78,7 +78,7 @@ const Addresses = () => {
           <div className="space-y-4">
 
             {addresses.map((addr) => (
-              <AddressCard key={addr._id} addr={addr} onEditHandler={onEditHandler} setAdressess={setAddresses} />
+              <AddressCard key={addr._id} addr={addr} onEditHandler={onEditHandler} setAdresses={setAddresses} />
             ))}
 
           </div>
