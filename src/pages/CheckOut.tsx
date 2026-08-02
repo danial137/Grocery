@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCart } from "../context/CartContext"
 import { dummyAddressData } from "../assets/assets"
@@ -44,33 +44,38 @@ const CheckOut = () => {
 
   const steps: { Key: string; label: string; icon: typeof MapPinIcon }[] = [
     { Key: "address", label: "Address", icon: MapPinIcon },
-    { Key: "apayment", label: "payment", icon: CreditCardIcon },
+    { Key: "payment", label: "payment", icon: CreditCardIcon },
     { Key: "review", label: "review", icon: CheckIcon },
   ]
 
-  const handleplaceOrder = async () => {
+  const handlePlaceOrder = async () => {
     setLoading(true)
-    navigate("/orders")
+    try {
+      // TODO: submit order to the backend here
+      navigate("/orders")
+    } finally {
+      setLoading(false)
+    }
   }
 
 
-  useState(() => {
+  useEffect(() => {
     if (user?.addresses.length) {
       const defaultAddr = user.addresses.find((a) => a.isDefault) || user.addresses[0]
       setAddress({
-        _id: defaultAddr?._id,
-        label: defaultAddr?.label,
-        address: defaultAddr?.address,
-        city: defaultAddr?.city,
-        state: defaultAddr?.zip,
-        zip: defaultAddr?.zip,
-        isDefault: defaultAddr?.isDefault,
-        lat: defaultAddr?.lat,
-        lng: defaultAddr?.lng,
-
+        _id: defaultAddr?._id ?? "",
+        label: defaultAddr?.label ?? "home",
+        address: defaultAddr?.address ?? "",
+        city: defaultAddr?.city ?? "",
+        state: defaultAddr?.state ?? "",
+        zip: defaultAddr?.zip ?? "",
+        isDefault: defaultAddr?.isDefault ?? false,
+        lat: defaultAddr?.lat ?? 0,
+        lng: defaultAddr?.lng ?? 0,
       })
     }
-  })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   if (items.length === 0) {
@@ -97,13 +102,12 @@ const CheckOut = () => {
   return (
     <div className="min-h-screen bg-app-cream">
 
-      <div className="max-4xl mx-auto sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto sm:px-6 lg:px-8 py-8">
 
 
-        <button onClick={() => navigate(-1)} className="">
+        <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-sm text-app-text-light hover:text-app-green mb-4 transition-colors">
 
           <ArrowLeft className="size-4" /> Back
-
 
         </button>
 
@@ -121,9 +125,9 @@ const CheckOut = () => {
 
                 <s.icon className="size-4" /> {s.label}
 
-                {i < step.length - 1 && <ChevronRightIcon className="size-4 text-app-text-light" />}
-
               </button>
+
+              {i < steps.length - 1 && <ChevronRightIcon className="size-4 text-app-text-light" />}
 
             </div>
           ))}
@@ -140,7 +144,7 @@ const CheckOut = () => {
 
             {step === "payment" && <CheckoutPayment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} setStep={setStep} />}
 
-            {step === "review" && <CheckoutReview address={adress} items={items} handlePlaceOrder={handleplaceOrder} loading={loading} total={total} />}
+            {step === "review" && <CheckoutReview address={adress} items={items} handlePlaceOrder={handlePlaceOrder} loading={loading} total={total} />}
 
 
           </div>
@@ -148,7 +152,7 @@ const CheckOut = () => {
 
           {/* order summary sidebar */}
 
-          <div className="bg-white roundd-xl p-5 h-fit sticky top-24">
+          <div className="bg-white rounded-xl p-5 h-fit sticky top-24">
 
             <h3 className="text-sm font-semibold text-app-green mb-4">Order Summary</h3>
 
@@ -170,6 +174,12 @@ const CheckOut = () => {
               <div className="flex justify-between">
                 <span className="text-app-text-light">Tax</span>
                 <span>{currency} {tax.toFixed(2)}</span>
+              </div>
+
+
+              <div className="flex justify-between pt-3 border-t border-app-border text-base font-semibold">
+                <span className="text-app-text-light">Total</span>
+                <span className="text-app-green">{currency} {total.toFixed(2)}</span>
               </div>
 
             </div>
