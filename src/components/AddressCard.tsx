@@ -16,7 +16,7 @@ const AddressCard = ({ addr, onEditHandler, setAdresses: _setAdresses }: Address
     }
 
     return (
-        <div key={addr._id} className="max-w-3xl bg-white rounded-2xl p-6 flex items-start justify-between">
+        <div key={addr.id} className="max-w-3xl bg-white rounded-2xl p-6 flex items-start justify-between">
 
 
             {/* left */}
@@ -52,7 +52,7 @@ const AddressCard = ({ addr, onEditHandler, setAdresses: _setAdresses }: Address
                     <PencilIcon className="size-4" />
                 </button>
 
-                <button onClick={() => handleDelete(addr._id)} className="p-2 text-app-text-light hover:text-app-green hover:bg-app-cream rounded-lg transition-colors">
+                <button onClick={() => handleDelete(addr.id)} className="p-2 text-app-text-light hover:text-app-green hover:bg-app-cream rounded-lg transition-colors">
                     <Trash2Icon className="size-4" />
                 </button>
 

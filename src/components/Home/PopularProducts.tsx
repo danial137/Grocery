@@ -12,7 +12,7 @@ const PopularProducts = () => {
     const [products, setProducts] = useState<Product[]>([])
 
     useEffect(() => {
-        api.get('/products?limit=8&sort=rating').then(({ data }) => {
+        api.get('/products?sort=rating').then(({ data }) => {
             setProducts(data.products)
 
         }).catch((error: any) => {
@@ -46,8 +46,8 @@ const PopularProducts = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 xl:gap-8">
 
-                {products.map((product) => (
-                    <ProductCard product={product} key={product._id} />
+                {products.slice(0,10).map((product) => (
+                    <ProductCard product={product} key={product.id} />
                 ))}
 
             </div>

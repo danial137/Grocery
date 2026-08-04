@@ -74,7 +74,7 @@ const SearchResults = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
 
             {products.map((prodcut) => (
-              <ProductCard key={prodcut._id} product={prodcut} />
+              <ProductCard key={prodcut.id} product={prodcut} />
             ))}
 
           </div>
