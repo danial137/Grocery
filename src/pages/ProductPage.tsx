@@ -31,24 +31,18 @@ const ProductPage = () => {
 
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true)
-      setLocalQuantity(1)
-      window.scrollTo(0, 0)
 
-      try {
-        const response = await api.get('/products')
-        const products = response.data as Product[]
-        const currentProduct = products.find((p) => p.id === id)
+    setLoading(true)
+    setLocalQuantity(1)
+    window.scrollTo(0, 0)
 
-        setProduct(currentProduct || null)
-        setRelatedProducts(currentProduct ? products.filter((p) => p.id !== id) : [])
-      } finally {
-        setLoading(false)
-      }
-    }
+    api.get(`/products/${id}`).then(({ data }) => {
+      setProduct(data.product)
+      return api.get(`/products?category=${data.prodcut.category}`)
+    }).then(({ data }) => {
+      setRelatedProducts(data.prodcuts.filter((p: Product) => p.id !== id))
+    }).catch(() => navigate("products")).finally(() => setLoading(false))
 
-    fetchProduct()
   }, [id, navigate])
 
   if (loading) return <Loading />
@@ -289,7 +283,7 @@ const ProductPage = () => {
               <div>
                 <h2 className="text-2xl font-semibold text-app-green">Related Products</h2>
 
-                <p className="text-sm text-app-text-light mt-1">More from {categoryLabel }</p>
+                <p className="text-sm text-app-text-light mt-1">More from {categoryLabel}</p>
               </div>
 
               <Link className="text-sm font-semibold text-app-orange hover:text-app-orange-dark flex items-center gap-1 transition-colors hover:translate-2" to={`/products?category=${product.category}`}>
