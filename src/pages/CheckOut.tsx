@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCart } from "../context/CartContext"
-import { dummyAddressData } from "../assets/assets"
 import type { Address } from "../types"
 import { ArrowLeft, CheckIcon, ChevronRightIcon, CreditCardIcon, MapPinIcon } from "lucide-react"
 import CheckoutAddress from "../components/Checkout/CheckoutAddress"
 import CheckoutPayment from "../components/Checkout/CheckoutPayment"
 import CheckoutReview from "../components/Checkout/CheckoutReview"
 import api from "../config/api"
+import toast from "react-hot-toast"
+import { useAuth } from "../context/AuthContext"
 
 
 const CheckOut = () => {
@@ -16,14 +17,14 @@ const CheckOut = () => {
   const currency = import.meta.env.VITE_CURRENCY_SYMBOL || "$"
 
 
-  const { items, cartTotal } = useCart()
+  const { items, cartTotal, clearCart } = useCart()
 
-  const { user } = { user: { addresses: dummyAddressData } }
+  const { user } = useAuth()
 
   const [step, setStep] = useState("address")
   const [loading, setLoading] = useState(false)
 
-  const [adress, setAddress] = useState<Address>({
+  const [address, setAddress] = useState<Address>({
     id: "",
     label: "home",
     address: "",
@@ -56,39 +57,54 @@ const CheckOut = () => {
       const orderData = {
         items: items.map((item) => ({
           product: item.product.id,
-          quantity:item.quantity,
+          quantity: item.quantity,
         })),
-        shippingAddress: adress,
+        shippingAddress: address,
         paymentMethod
       }
+     
       const { data } = await api.post('/orders', orderData)
       console.log(data)
-    } catch (error) {
-      
+      if (data.url) {
+        window.location.href = data.url
+        return
+      }
+      clearCart()
+      toast.success("Order placed successfully")
+      navigate(`/orders/${data.order.id} `)
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message)
+    } finally {
+      setLoading(false)
+      scrollTo(0, 0)
     }
   }
 
 
   useEffect(() => {
-    if (user?.addresses.length) {
-      const defaultAddr = user.addresses.find((a) => a.isDefault) || user.addresses[0]
-      setAddress({
-        id: defaultAddr?.id ?? "",
-        label: defaultAddr?.label ?? "home",
-        address: defaultAddr?.address ?? "",
-        city: defaultAddr?.city ?? "",
-        state: defaultAddr?.state ?? "",
-        zip: defaultAddr?.zip ?? "",
-        isDefault: defaultAddr?.isDefault ?? false,
-        lat: defaultAddr?.lat ?? 0,
-        lng: defaultAddr?.lng ?? 0,
+    api.get("/addresses")
+      .then(({ data }) => {
+        setAddress(data.addresses);
+
+        if (data.addresses.length > 0) {
+          const defaultAddr =
+            data.addresses.find((a: Address) => a.isDefault) ??
+            data.addresses[0];
+
+          setAddress(defaultAddr);
+        }
       })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+      .catch((error:any) => {
+        console.log(error.response?.data);
+        console.log(error.response?.status);
+        toast.error(error.response?.data?.message || error.message);
+      });
+  }, []);
+
 
 
   if (items.length === 0) {
+    console.log(address);
     return (
       <div className="min-h-screen bg-app-cream flex-center">
 
@@ -150,11 +166,11 @@ const CheckOut = () => {
           {/* main form */}
 
           <div className="md:col-span-2">
-            {step === "address" && <CheckoutAddress address={adress} setAddress={setAddress} setStep={setStep} user={user} />}
+            {step === "address" && <CheckoutAddress address={address} setAddress={setAddress} setStep={setStep} user={user} />}
 
             {step === "payment" && <CheckoutPayment paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} setStep={setStep} />}
 
-            {step === "review" && <CheckoutReview address={adress} items={items} handlePlaceOrder={handlePlaceOrder} loading={loading} total={total} />}
+            {step === "review" && <CheckoutReview address={address} items={items} handlePlaceOrder={handlePlaceOrder} loading={loading} total={total} />}
 
 
           </div>

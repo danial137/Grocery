@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { dummyDashboardOrdersData } from "../assets/assets"
 import Loading from "../components/Loading"
 import { ArrowLeftIcon, MapPinIcon, PhoneIcon } from "lucide-react"
 import type { Order } from "../types"
 import OrderOTP from "../components/OrderTracking/OrderOTP"
 import LiveMap from "../components/OrderTracking/LiveMap"
 import OrderTimeLine from "../components/OrderTracking/OrderTimeLine"
+import api from "../config/api"
 
 const OrderTracking = () => {
 
@@ -15,15 +15,13 @@ const OrderTracking = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [order, setOrder] = useState<Order | null>(null)
-  const [loading, setLOading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [liveLocation] = useState<{ lat: number, lng: number } | null>(null)
 
 
 
   useEffect(() => {
-
-    setOrder(dummyDashboardOrdersData.find((o) => o.id === id) as any)
-    setLOading(false)
+    api.get(`/orders/${id}`).then((res)=>setOrder(res.data.order)).catch(()=>navigate('/orders')).finally(()=> setLoading(false))
 
   }, [id, navigate])
 
