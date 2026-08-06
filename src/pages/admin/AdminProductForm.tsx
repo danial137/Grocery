@@ -1,16 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeftIcon } from "lucide-react";
-import { categoriesData, dummyProducts } from "../../assets/assets";
+import { categoriesData } from "../../assets/assets";
 import Loading from "../../components/Loading";
 
 export default function AdminProductForm() {
     const { id } = useParams();
     const isEdit = Boolean(id);
 
-    const [loading, setLoading] = useState(isEdit);
+    // const [loading, setLoading] = useState(isEdit);
     const [saving] = useState(false);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [loading]=useState()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -24,20 +25,25 @@ export default function AdminProductForm() {
         isOrganic: false,
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (isEdit) {
-                setFormData(() => dummyProducts.find((p) => p.id === id) as any)
-            }
-            setLoading(false)
-        };
-        fetchData();
-    }, [id, isEdit]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         if (isEdit) {
+    //             const product = dummyProducts.find((p) => p.id === id);
+    //             if (product) {
+    //                 setFormData(product as any);
+    //             }
+    //         }
+    //         setLoading(false)
+    //     };
+    //     fetchData();
+    // }, [id, isEdit]);
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
 
     };
+
+
 
     return (
         <>

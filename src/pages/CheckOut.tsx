@@ -7,6 +7,7 @@ import { ArrowLeft, CheckIcon, ChevronRightIcon, CreditCardIcon, MapPinIcon } fr
 import CheckoutAddress from "../components/Checkout/CheckoutAddress"
 import CheckoutPayment from "../components/Checkout/CheckoutPayment"
 import CheckoutReview from "../components/Checkout/CheckoutReview"
+import api from "../config/api"
 
 
 const CheckOut = () => {
@@ -52,9 +53,18 @@ const CheckOut = () => {
     setLoading(true)
     try {
       // TODO: submit order to the backend here
-      navigate("/orders")
-    } finally {
-      setLoading(false)
+      const orderData = {
+        items: items.map((item) => ({
+          product: item.product.id,
+          quantity:item.quantity,
+        })),
+        shippingAddress: adress,
+        paymentMethod
+      }
+      const { data } = await api.post('/orders', orderData)
+      console.log(data)
+    } catch (error) {
+      
     }
   }
 
